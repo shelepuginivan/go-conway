@@ -24,24 +24,24 @@ func New(
 	}
 }
 
-func (c Converter) GameGridToCharGrid(grid [][]bool) []string {
+func (c Converter) GameGridToCharGrid(grid [][]bool) [][]rune {
 	width := len(grid[0])
 	height := len(grid)
 
-	charGrid := make([]string, height)
+	charGrid := make([][]rune, height)
 
 	for y, row := range grid {
 		for x, cell := range row {
 			if isCorner(width, height, x, y) {
-				charGrid[y] += string(c.CornerChar)
+				charGrid[y] = append(charGrid[y], c.CornerChar)
 			} else if isHorizontalBorder(height, y) {
-				charGrid[y] += string(c.HorizontalBorderChar)
+				charGrid[y] = append(charGrid[y], c.HorizontalBorderChar)
 			} else if isVerticalBorder(width, x) {
-				charGrid[y] += string(c.VerticalBorderChar)
+				charGrid[y] = append(charGrid[y], c.VerticalBorderChar)
 			} else if cell {
-				charGrid[y] += string(c.AliveChar)
+				charGrid[y] = append(charGrid[y], c.AliveChar)
 			} else {
-				charGrid[y] += string(c.DeadChar)
+				charGrid[y] = append(charGrid[y], c.DeadChar)
 			}
 		}
 	}
@@ -49,7 +49,7 @@ func (c Converter) GameGridToCharGrid(grid [][]bool) []string {
 	return charGrid
 }
 
-func (c Converter) CharGridToGameGrid(grid []string) [][]bool {
+func (c Converter) CharGridToGameGrid(grid [][]rune) [][]bool {
 	gameGrid := make([][]bool, len(grid))
 
 	for y, row := range grid {

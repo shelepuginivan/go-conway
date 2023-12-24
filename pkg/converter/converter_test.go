@@ -87,12 +87,12 @@ func TestConverterGameGridToCharGrid(t *testing.T) {
 		{false, false, false, false, false},
 	}
 
-	expectedCharGrid := []string{
-		"+---+",
-		"|.@.|",
-		"|.@.|",
-		"|.@.|",
-		"+---+",
+	expectedCharGrid := [][]rune{
+		{'+', '-', '-', '-', '+'},
+		{'|', '.', '@', '.', '|'},
+		{'|', '.', '@', '.', '|'},
+		{'|', '.', '@', '.', '|'},
+		{'+', '-', '-', '-', '+'},
 	}
 
 	actualGrid := c.GameGridToCharGrid(gameGrid)
@@ -105,12 +105,12 @@ func TestConverterGameGridToCharGrid(t *testing.T) {
 func TestConverterCharGridToGameGrid(t *testing.T) {
 	c := New('@', '.', '|', '-', '+')
 
-	charGrid := []string{
-		"+---+",
-		"|.@.|",
-		"|@..|",
-		"|.@.|",
-		"+---+",
+	charGrid := [][]rune{
+		{'+', '-', '-', '-', '+'},
+		{'|', '.', '@', '.', '|'},
+		{'|', '@', '.', '.', '|'},
+		{'|', '.', '@', '.', '|'},
+		{'+', '-', '-', '-', '+'},
 	}
 
 	expectedGameGrid := [][]bool{
