@@ -80,6 +80,8 @@ func Game() error {
 			switch event.Ch {
 			case 'q':
 				return nil
+			case 'r':
+				engine.FillRandom()
 			case 'x':
 				running = !running
 			case 'z':
