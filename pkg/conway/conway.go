@@ -45,6 +45,11 @@ func (c *Conway) Tick() *Conway {
 	return c
 }
 
+func (c *Conway) Clear() *Conway {
+	c.Grid = EmptyGrid(c.Width, c.Height)
+	return c
+}
+
 func (c Conway) sumNeighbours(x, y int) int {
 	return boolToInt(c.GetCell(x-1, y-1)) +
 		boolToInt(c.GetCell(x-1, y)) +
