@@ -22,11 +22,17 @@ func Game() error {
 	running := false
 
 	c.Draw()
+	drawBorder(termbox.ColorBlack)
+
+	if err := termbox.Flush(); err != nil {
+		return err
+	}
 
 	go func() {
 		for {
 			if running {
 				drawGrid(engine.Tick())
+				drawBorder(termbox.ColorGreen)
 
 				if err := termbox.Flush(); err != nil {
 					break
@@ -94,6 +100,7 @@ func Game() error {
 		}
 
 		drawGrid(&engine)
+		drawBorder(termbox.ColorBlack)
 		c.Draw()
 
 		if err := termbox.Flush(); err != nil {
@@ -115,5 +122,19 @@ func drawGrid(c *conway.Conway) {
 		for y := 1; y < c.Height-1; y++ {
 			drawCell(x, y, c.GetCell(x, y))
 		}
+	}
+}
+
+func drawBorder(color termbox.Attribute) {
+	width, height := termbox.Size()
+
+	for x := 0; x < width; x++ {
+		termbox.SetCell(x, 0, ' ', color, color)
+		termbox.SetCell(x, height-1, ' ', color, color)
+	}
+
+	for y := 1; y < height-1; y++ {
+		termbox.SetCell(0, y, ' ', color, color)
+		termbox.SetCell(width-1, y, ' ', color, color)
 	}
 }
