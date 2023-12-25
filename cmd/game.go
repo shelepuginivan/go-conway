@@ -65,7 +65,7 @@ func Game() error {
 				drawCell(x, y, !currentState)
 				engine.SetCell(x, y, !currentState)
 			case termbox.KeyDelete:
-				engine.Grid = conway.EmptyGrid(width, height)
+				engine.Clear()
 			case termbox.KeyEnter:
 				engine.Tick()
 			case termbox.KeyEsc, termbox.KeyCtrlQ, termbox.KeyCtrlC:
