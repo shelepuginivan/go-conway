@@ -67,7 +67,6 @@ func TestConwaySetCell(t *testing.T) {
 			t.Errorf("Expected cell to be %t, but got %t", c.v, newValue)
 		}
 	}
-
 }
 
 func TestConwayTick(t *testing.T) {
@@ -114,6 +113,30 @@ func TestConwayClear(t *testing.T) {
 
 	if !reflect.DeepEqual(game.Grid, expectedGrid) {
 		t.Errorf("Expected grid after tick: %v, but got %v", expectedGrid, game.Grid)
+	}
+}
+
+func TestConwayFillRandom(t *testing.T) {
+	grid := [][]bool{
+		{true, false, false, false, false},
+		{false, false, true, false, false},
+		{false, false, true, true, false},
+		{false, true, true, false, false},
+		{false, false, false, false, false},
+	}
+	game := New(grid)
+	game.FillRandom()
+
+	for x := 0; x < game.Width; x++ {
+		if game.GetCell(x, 0) || game.GetCell(x, game.Height-1) {
+			t.Error("Expected border elements to be false, got true")
+		}
+	}
+
+	for y := 0; y < game.Height; y++ {
+		if game.GetCell(0, y) || game.GetCell(game.Width-1, y) {
+			t.Error("Expected border elements to be false, got true")
+		}
 	}
 }
 
