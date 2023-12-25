@@ -31,9 +31,9 @@ func (c *Conway) Tick() *Conway {
 
 	for x := 1; x < c.Width-1; x++ {
 		for y := 1; y < c.Height-1; y++ {
-			sum := c.sumNeighbours(y, x)
+			sum := c.sumNeighbours(x, y)
 
-			if c.Grid[y][x] {
+			if c.GetCell(x, y) {
 				newGrid[y][x] = sum == 2 || sum == 3
 			} else {
 				newGrid[y][x] = sum == 3
@@ -46,12 +46,12 @@ func (c *Conway) Tick() *Conway {
 }
 
 func (c Conway) sumNeighbours(x, y int) int {
-	return boolToInt(c.Grid[x-1][y-1]) +
-		boolToInt(c.Grid[x-1][y]) +
-		boolToInt(c.Grid[x-1][y+1]) +
-		boolToInt(c.Grid[x][y-1]) +
-		boolToInt(c.Grid[x][y+1]) +
-		boolToInt(c.Grid[x+1][y-1]) +
-		boolToInt(c.Grid[x+1][y]) +
-		boolToInt(c.Grid[x+1][y+1])
+	return boolToInt(c.GetCell(x-1, y-1)) +
+		boolToInt(c.GetCell(x-1, y)) +
+		boolToInt(c.GetCell(x-1, y+1)) +
+		boolToInt(c.GetCell(x, y-1)) +
+		boolToInt(c.GetCell(x, y+1)) +
+		boolToInt(c.GetCell(x+1, y-1)) +
+		boolToInt(c.GetCell(x+1, y)) +
+		boolToInt(c.GetCell(x+1, y+1))
 }
