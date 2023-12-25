@@ -17,6 +17,15 @@ func New(grid [][]bool) Conway {
 	}
 }
 
+func (c Conway) GetCell(x, y int) bool {
+	return c.Grid[y][x]
+}
+
+func (c *Conway) SetCell(x, y int, value bool) *Conway {
+	c.Grid[y][x] = value
+	return c
+}
+
 func (c *Conway) Tick() *Conway {
 	newGrid := EmptyGrid(c.Width, c.Height)
 
