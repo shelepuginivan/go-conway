@@ -97,7 +97,10 @@ func Game() error {
 
 		drawGrid(&engine)
 		drawCursor(x, y)
-		termbox.Flush()
+
+		if err := termbox.Flush(); err != nil {
+			return err
+		}
 	}
 }
 
