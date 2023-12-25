@@ -7,7 +7,7 @@ func boolToInt(b bool) int {
 	return 0
 }
 
-func binaryMatrix(width, height int) [][]bool {
+func EmptyGrid(width, height int) [][]bool {
 	mat := make([][]bool, height)
 
 	for i := range mat {

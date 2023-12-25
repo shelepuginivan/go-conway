@@ -18,7 +18,7 @@ func New(grid [][]bool) Conway {
 }
 
 func (c *Conway) Tick() *Conway {
-	newGrid := binaryMatrix(c.Width, c.Height)
+	newGrid := EmptyGrid(c.Width, c.Height)
 
 	for x := 1; x < c.Width-1; x++ {
 		for y := 1; y < c.Height-1; y++ {
