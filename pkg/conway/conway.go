@@ -50,6 +50,17 @@ func (c *Conway) Clear() *Conway {
 	return c
 }
 
+func (c *Conway) FillRandom() *Conway {
+	for x := 0; x < c.Width; x++ {
+		for y := 0; y < c.Height; y++ {
+			isBorder := x == 0 || y == 0 || x == c.Width-1 || y == c.Height-1
+			c.SetCell(x, y, !isBorder && randomBool())
+		}
+	}
+
+	return c
+}
+
 func (c Conway) sumNeighbours(x, y int) int {
 	return boolToInt(c.GetCell(x-1, y-1)) +
 		boolToInt(c.GetCell(x-1, y)) +
