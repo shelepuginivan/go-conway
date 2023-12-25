@@ -68,15 +68,11 @@ func Game() error {
 			case termbox.KeyEnd:
 				x = width - 2
 			case termbox.KeySpace:
-				if engine.GetCell(x, y) {
-					setDead(x, y)
-					engine.SetCell(x, y, false)
-				} else {
-					setAlive(x, y)
-					engine.SetCell(x, y, true)
-				}
+				currentState := engine.GetCell(x, y)
+				drawCell(x, y, !currentState)
+				engine.SetCell(x, y, !currentState)
 			case termbox.KeyDelete:
-				setDead(x, y)
+				drawCell(x, y, false)
 				engine.SetCell(x, y, false)
 			case termbox.KeyEnter:
 				engine.Tick()
@@ -109,12 +105,12 @@ func drawCursor(x, y int) {
 	termbox.SetBg(x, y, termbox.ColorRed)
 }
 
-func setAlive(x, y int) {
-	termbox.SetCell(x, y, '@', termbox.AttrBold, termbox.ColorDefault)
-}
-
-func setDead(x, y int) {
-	termbox.SetCell(x, y, ' ', termbox.ColorDefault, termbox.ColorDefault)
+func drawCell(x, y int, alive bool) {
+	if alive {
+		termbox.SetCell(x, y, '@', termbox.AttrBold, termbox.ColorDefault)
+	} else {
+		termbox.SetCell(x, y, ' ', termbox.ColorDefault, termbox.ColorDefault)
+	}
 }
 
 func removeCursor(x, y int) {
@@ -124,11 +120,7 @@ func removeCursor(x, y int) {
 func drawGrid(c *conway.Conway) {
 	for x := 1; x < c.Width-1; x++ {
 		for y := 1; y < c.Height-1; y++ {
-			if c.GetCell(x, y) {
-				setAlive(x, y)
-			} else {
-				setDead(x, y)
-			}
+			drawCell(x, y, c.GetCell(x, y))
 		}
 	}
 }
