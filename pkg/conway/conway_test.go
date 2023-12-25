@@ -94,6 +94,29 @@ func TestConwayTick(t *testing.T) {
 	}
 }
 
+func TestConwayClear(t *testing.T) {
+	grid := [][]bool{
+		{false, false, false, false, false},
+		{false, false, true, false, false},
+		{false, false, true, true, false},
+		{false, true, true, false, false},
+		{false, false, false, false, false},
+	}
+	expectedGrid := [][]bool{
+		{false, false, false, false, false},
+		{false, false, false, false, false},
+		{false, false, false, false, false},
+		{false, false, false, false, false},
+		{false, false, false, false, false},
+	}
+	game := New(grid)
+	game.Clear()
+
+	if !reflect.DeepEqual(game.Grid, expectedGrid) {
+		t.Errorf("Expected grid after tick: %v, but got %v", expectedGrid, game.Grid)
+	}
+}
+
 func TestConwaySumNeighbours(t *testing.T) {
 	testGrid := [][]bool{
 		{false, true, false, false, false},
