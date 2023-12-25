@@ -37,40 +37,35 @@ func Game() error {
 	}()
 
 	for {
+		removeCursor(x, y)
+
 		switch event := termbox.PollEvent(); event.Type {
 		case termbox.EventKey:
+
 			switch event.Key {
 			case termbox.KeyArrowUp:
 				if y > 1 {
-					removeCursor(x, y)
 					y--
 				}
 			case termbox.KeyArrowDown:
 				if y < height-2 {
-					removeCursor(x, y)
 					y++
 				}
 			case termbox.KeyArrowLeft:
 				if x > 1 {
-					removeCursor(x, y)
 					x--
 				}
 			case termbox.KeyArrowRight:
 				if x < width-2 {
-					removeCursor(x, y)
 					x++
 				}
 			case termbox.KeyPgup:
-				removeCursor(x, y)
 				y = 1
 			case termbox.KeyPgdn:
-				removeCursor(x, y)
 				y = height - 2
 			case termbox.KeyHome:
-				removeCursor(x, y)
 				x = 1
 			case termbox.KeyEnd:
-				removeCursor(x, y)
 				x = width - 2
 			case termbox.KeySpace:
 				if engine.GetCell(x, y) {
@@ -92,7 +87,6 @@ func Game() error {
 			}
 		case termbox.EventMouse:
 			if event.MouseX > 1 && event.MouseX < width-2 && event.MouseY > 1 && event.MouseY < height-2 {
-				removeCursor(x, y)
 				x, y = event.MouseX, event.MouseY
 			}
 		case termbox.EventResize:
