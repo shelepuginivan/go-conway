@@ -26,8 +26,12 @@ func Game() error {
 		for {
 			if running {
 				drawGrid(engine.Tick())
-				termbox.Flush()
+
+				if err := termbox.Flush(); err != nil {
+					break
+				}
 			}
+
 			time.Sleep(200 * time.Millisecond)
 		}
 	}()
