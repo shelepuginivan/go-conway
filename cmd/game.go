@@ -5,6 +5,7 @@ import (
 
 	"github.com/nsf/termbox-go"
 	"github.com/shelepuginivan/go-conway/pkg/conway"
+	"github.com/shelepuginivan/go-conway/pkg/cursor"
 )
 
 func Game() error {
@@ -16,11 +17,11 @@ func Game() error {
 
 	termbox.SetInputMode(termbox.InputEsc | termbox.InputMouse)
 	width, height := termbox.Size()
+	c := cursor.New(1, 1, width, height)
 	engine := conway.New(conway.EmptyGrid(width, height))
 	running := false
 
-	x, y := 1, 1
-	drawCursor(x, y)
+	c.Draw()
 
 	go func() {
 		for {
@@ -37,36 +38,28 @@ func Game() error {
 	}()
 
 	for {
-		removeCursor(x, y)
+		x, y := c.Get()
+		c.Remove()
 
 		switch event := termbox.PollEvent(); event.Type {
 		case termbox.EventKey:
-
 			switch event.Key {
 			case termbox.KeyArrowUp:
-				if y > 1 {
-					y--
-				}
+				c.Up()
 			case termbox.KeyArrowDown:
-				if y < height-2 {
-					y++
-				}
+				c.Down()
 			case termbox.KeyArrowLeft:
-				if x > 1 {
-					x--
-				}
+				c.Left()
 			case termbox.KeyArrowRight:
-				if x < width-2 {
-					x++
-				}
+				c.Right()
 			case termbox.KeyPgup:
-				y = 1
+				c.Goto(x, 1)
 			case termbox.KeyPgdn:
-				y = height - 2
+				c.Goto(x, height-2)
 			case termbox.KeyHome:
-				x = 1
+				c.Goto(1, y)
 			case termbox.KeyEnd:
-				x = width - 2
+				c.Goto(width-2, y)
 			case termbox.KeySpace:
 				currentState := engine.GetCell(x, y)
 				drawCell(x, y, !currentState)
@@ -82,9 +75,7 @@ func Game() error {
 				return nil
 			}
 		case termbox.EventMouse:
-			if event.MouseX > 1 && event.MouseX < width-2 && event.MouseY > 1 && event.MouseY < height-2 {
-				x, y = event.MouseX, event.MouseY
-			}
+			c.Goto(event.MouseX, event.MouseY)
 		case termbox.EventResize:
 			if x > event.Width-2 {
 				x = event.Width - 2
@@ -93,19 +84,17 @@ func Game() error {
 			if y > event.Height-2 {
 				y = event.Height - 2
 			}
+
+			c.Goto(x, y)
 		}
 
 		drawGrid(&engine)
-		drawCursor(x, y)
+		c.Draw()
 
 		if err := termbox.Flush(); err != nil {
 			return err
 		}
 	}
-}
-
-func drawCursor(x, y int) {
-	termbox.SetBg(x, y, termbox.ColorRed)
 }
 
 func drawCell(x, y int, alive bool) {
@@ -114,10 +103,6 @@ func drawCell(x, y int, alive bool) {
 	} else {
 		termbox.SetCell(x, y, ' ', termbox.ColorDefault, termbox.ColorDefault)
 	}
-}
-
-func removeCursor(x, y int) {
-	termbox.SetBg(x, y, termbox.ColorDefault)
 }
 
 func drawGrid(c *conway.Conway) {
